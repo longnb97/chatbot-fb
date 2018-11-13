@@ -33,7 +33,7 @@ app.post('/webhook', function (req, res) { // Phần sử lý tin nhắn của n
             if (message.message) {
                 if (message.message.text) {
                     var text = message.message.text;
-                    sendMessage(senderId, "lo con cac");
+                    sendMessage(senderId, "Hello!! I'm a bot. Your message: " + text);
                 }
             }
         }
@@ -44,7 +44,7 @@ app.post('/webhook', function (req, res) { // Phần sử lý tin nhắn của n
 // Đây là function dùng api của facebook để gửi tin nhắn
 function sendMessage(senderId, message) {
     request({
-        url: 'https://graph.facebook.com/v3.2/me/messages',
+        url: 'https://graph.facebook.com/v2.6/me/messages',
         qs: {
             access_token: config.PAGE_ACCESS_TOKEN,
         },
