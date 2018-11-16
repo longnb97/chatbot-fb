@@ -1,17 +1,14 @@
+const http = require('http');
+const bodyParser = require('body-parser');
+const express = require('express');
 
-
-var http = require('http');
-var bodyParser = require('body-parser');
-var express = require('express');
-
-const config 
-= require('./config')
-var app = express();
+const config = require('./config')
+const app = express();
 app.use(bodyParser.urlencoded({
     extended: false
 }));
-var server = http.createServer(app);
-var request = require("request");
+const server = http.createServer(app);
+const request = require("request");
 
 app.get('/', (req, res) => {
     res.send("Home page. Server running okay.");
@@ -19,7 +16,7 @@ app.get('/', (req, res) => {
 
 app.get('/webhook', function (req, res) { // Đây là path để validate tooken bên app facebook gửi qua
     if (req.query['hub.verify_token'] === config.VALIDATION_TOKEN) {
-        res.send(req.query['hub.challenge']);
+        res.send(req.query['hub.challenge']); '/   '
     }
     res.send('Error, wrong validation token');
 });
@@ -34,6 +31,7 @@ app.post('/webhook', function (req, res) { // Phần sử lý tin nhắn của n
                 if (message.message.text) {
                     var text = message.message.text;
                     sendMessage(senderId, "Hello!! I'm a bot. Your message: " + text);
+                    console.log('ok');
                 }
             }
         }
