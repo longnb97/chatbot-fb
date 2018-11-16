@@ -32,6 +32,7 @@ app.post('/webhook', function (req, res) { // Phần sử lý tin nhắn của n
                     var text = message.message.text;
                     sendMessage(senderId, "Hello!! I'm a bot. Your message: " + text);
                     console.log('ok')
+                    console.log('ok');
                 }
             }
         }
