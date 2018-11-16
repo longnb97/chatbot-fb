@@ -30,7 +30,7 @@ function verify(req, res) {
         let query = req.query['hub.challenge']
         res.send({ query, message: "verified success!" });
     }
-    res.send('Error, wrong validation tokenn');
+    res.send('Error, wrong validation tokenn ');
 }
 
 function handleMessage(req, res) {
