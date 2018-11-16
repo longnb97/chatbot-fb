@@ -10,12 +10,18 @@ app.use(bodyParser.urlencoded({
 const server = http.createServer(app);
 const request = require("request");
 
+const APP_SECRET = 'f8fe27169d1328156aea4c22b8634de3';
+const VALIDATION_TOKEN = 'Token';
+const PAGE_ACCESS_TOKEN = "EAAEwKzAEQqwBAAPHZClYdG0Ar3GPZABuwmCAZCYycXBZBnkWTB27l7ynkrc1TXoAsZAUZCslXGEpnAXLW1TTVSIb6VuKIDC1ugzMAGU7a6bh6hOk7h0mbS3juC2ZCWzbvcsuzK16V9VrZCI1txji9oBypbOaWVUZC6gYrKYpAZCHfqLwZDZD"
+
 app.get('/', (req, res) => {
     res.send("Home page. Server running okay.");
 });
 
+
+
 app.get('/webhook', function (req, res) { // Đây là path để validate tooken bên app facebook gửi qua
-    if (req.query['hub.verify_token'] === config.VALIDATION_TOKEN) {
+    if (req.query['hub.verify_token'] === VALIDATION_TOKEN) {
         res.send(req.query['hub.challenge']); '/   '
     }
     res.send('Error, wrong validation token');
@@ -44,7 +50,7 @@ function sendMessage(senderId, message) {
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
         qs: {
-            access_token: config.PAGE_ACCESS_TOKEN,
+            access_token: PAGE_ACCESS_TOKEN,
         },
         method: 'POST',
         json: {
