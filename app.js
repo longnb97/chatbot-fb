@@ -28,9 +28,9 @@ function homePage(req, res) {
 function verify(req, res) {
     if (req.query['hub.verify_token'] === config.VALIDATION_TOKEN) {
         let query = req.query['hub.challenge']
-        res.send({ query, message: "verified success! " });
+        res.send({ query, message: "verified success!" });
     }
-    res.send('Error, wrong validation token');
+    res.send('Error, wrong validation token ');
 }
 
 function handleMessage(req, res) {
