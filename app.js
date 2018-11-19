@@ -22,7 +22,7 @@ app.post('/webhook', handleMessage)
 
 
 function homePage(req, res) {
-    res.send("Home Page eeeeeeeeeeeeeeeeeee")
+    res.send("Home Page")
 }
 
 function verify(req, res) {
@@ -73,6 +73,10 @@ function sendTextMessage(sender, text) {
         }
     })
 }
+
+setInterval(function(){
+    request({'https://chatbotbylong.hero'})
+},1000*60*20)
 
 // {
 //     object: "page",
