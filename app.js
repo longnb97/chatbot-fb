@@ -9,61 +9,93 @@ let app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-const port = process.env.PORT || 5000;
+app.set('port', (process.env.PORT || 5000))
 
-app.listen(port, (err) => {
+app.listen(app.get('port'), (err) => {
     if (err) console.log(err);
-    else console.log(`Server listening at ${port}`);
+    else console.log(`Server listening at ${app.get('port')}`);
 })
 
-app.use('/', homePage);
+app.get('/', homePage);
 app.get('/webhook', verify);
 app.post('/webhook', handleMessage)
 
 
 function homePage(req, res) {
-    res.send("home")
+    res.send("Home Page eeeeeeeeeeeeeeeeeee")
 }
 
 function verify(req, res) {
     if (req.query['hub.verify_token'] === config.VALIDATION_TOKEN) {
         let query = req.query['hub.challenge']
-        res.send({ query, message: "verified success!" });
+        let sendData = { query, message: "verified success!" }
+        res.send(sendData);
     }
-    res.send('Error, wrong validation tokenn ');
+    res.send('Error, wrong validation toke');
 }
 
 function handleMessage(req, res) {
-    var entries = req.body.entry;
-    for (var entry of entries) {
-        var messaging = entry.messaging;
-        for (var message of messaging) {
-            var senderId = message.sender.id;
-            if (message.message) {
-                if (message.message.text) {
-                    var text = message.message.text;
-                    sendMessage(senderId, "Hello!! I'm a bot. Your message: " + text);
-                }
-            }
+    let messaging_events = req.body.entry[0].messaging
+    console.log('//////////////////////////////////');
+    console.log(JSON.stringify(req.body))
+    console.log('//////////////////////////////////');
+    for (let i = 0; i < messaging_events.length; i++) {
+        let event = req.body.entry[0].messaging[i]
+        let sender = event.sender.id
+        if (event.message && event.message.text) {
+            let text = event.message.text
+            sendTextMessage(sender, "Tin nhan :  " + text)
+        }
+        if (event.postback) {
+            let text = JSON.stringify(event.postback)
+            sendTextMessage(sender, "Postback: " + text.substring(0, 200), config.PAGE_ACCESS_TOKEN)
+            continue
         }
     }
-    res.status(200).send("OK");
+    res.sendStatus(200);
 }
 
-function sendMessage() {
+function sendTextMessage(sender, text) {
+    let messageData = { text: text }
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
-        qs: {
-            access_token: config.PAGE_ACCESS_TOKEN,
-        },
+        qs: { access_token: config.PAGE_ACCESS_TOKEN },
         method: 'POST',
         json: {
-            recipient: {
-                id: senderId
-            },
-            message: {
-                text: message
-            },
+            recipient: { id: sender },
+            message: messageData,
         }
-    });
+    }, function (error, response, body) {
+        if (error) {
+            console.log('Error sending messages: ', error)
+        } else if (response.body.error) {
+            console.log('Error: ', response.body.error)
+        }
+    })
 }
+
+// {
+//     object: "page",
+//     entry: [{
+//         id: "2121424721411473",
+//         time: 1542364825835,
+//         messaging: [{
+//             sender: {
+//                 id: "2012290585495564"
+//             },
+//             recipient: {
+//                 id: "2121424721411473"
+//             },
+//             timestamp: 1542364821509,
+//             message: {
+//                 mid: "OQjUPE7X3O_iB062K4Mo0ehHPOUOrrDMWwSQuVdpooRc5hYylA6LZhLJEEGwX7z5mcwJnfoWQtAy7Zvgw4obZw",
+//                 seq: 1591505,
+//                 text: "a",
+//                 nlp: {
+//                     entities: {
+//                     }
+//                 }
+//             }
+//         }]
+//     }]
+// }
