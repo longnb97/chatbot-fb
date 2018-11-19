@@ -74,9 +74,15 @@ function sendTextMessage(sender, text) {
     })
 }
 
-setInterval(function(){
-    request({'https://chatbotbylong.hero'})
-},1000*60*20)
+setInterval(function () {
+    request({
+        url: 'https://chatbotbylong.herokuapp.com/',
+        method: "get",
+        function(err, response, body) {
+            if(err) console.log(err);
+        }
+    })
+}, 5000)
 
 // {
 //     object: "page",
