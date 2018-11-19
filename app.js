@@ -36,9 +36,9 @@ function verify(req, res) {
 
 function handleMessage(req, res) {
     let messaging_events = req.body.entry[0].messaging
-    console.log('/////////////////////aaaaaaa/////////////');
+    console.log('/////////////////////aaaaaaaa/////////////');
     console.log(JSON.stringify(req.body))
-    console.log('/////////////////////aaaaaaa/////////////');
+    console.log('/////////////////////aaaaaaaa/////////////');
     for (let i = 0; i < messaging_events.length; i++) {
         let event = req.body.entry[0].messaging[i]
         let sender = event.sender.id
