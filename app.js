@@ -82,7 +82,7 @@ setInterval(function () {
             if(err) console.log(err);
         }
     })
-}, 5000)
+}, 1000 * 60 * 20)
 
 // {
 //     object: "page",
