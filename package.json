@@ -2,7 +2,9 @@
   "name": "nodejs-express-app1",
   "version": "0.0.0",
   "description": "Multiple Buildpacks App",
-  "author": { "name": "f" },
+  "author": {
+    "name": "f"
+  },
   "main": "app.js",
   "engines": {
     "node": "8.11.3"
